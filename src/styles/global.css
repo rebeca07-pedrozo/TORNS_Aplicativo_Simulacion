@@ -1,0 +1,174 @@
+/* Base de la aplicación. Nada decorativo vive aquí. */
+
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior: none;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--surface-0);
+  color: var(--text-1);
+  font-family: var(--font);
+  font-size: var(--size-body);
+  line-height: var(--leading-body);
+  letter-spacing: var(--track-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-weight: 700;
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-title);
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+/* Los números de la simulación se comparan en columna: deben alinearse. */
+.cifra {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+button,
+a,
+[role='button'],
+input,
+select {
+  font: inherit;
+  touch-action: manipulation;
+}
+
+button,
+a,
+[role='button'] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  margin: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 0.2em;
+}
+
+/* iOS amplía la página cuando un campo tiene menos de 16 px. */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-s);
+}
+
+::selection {
+  background: var(--accent-dim);
+  color: var(--white);
+}
+
+/* Las superficies que pone el navegador también son de la casa. */
+:root {
+  scrollbar-color: var(--border-mid) var(--surface-0);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-mid);
+  border: 3px solid var(--surface-0);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--torns-deep);
+}
+
+input,
+textarea {
+  caret-color: var(--accent);
+}
+
+/* El guion de "fuera de rango" y los signos del desglose se leen mejor así. */
+:where(input[type='number'], .cifra) {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Salto al contenido, para quien navega con teclado. */
+.saltar-al-contenido {
+  position: fixed;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 200;
+  padding: var(--space-2) var(--space-4);
+  color: var(--black);
+  background: var(--accent);
+  border-radius: var(--radius-m);
+  font-weight: 700;
+  transform: translateY(-200%);
+  transition: transform var(--dur-quick) var(--ease-out);
+}
+
+.saltar-al-contenido:focus-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

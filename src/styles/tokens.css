@@ -1,0 +1,111 @@
+/* ===========================================================================
+   TORNS · Simulador de arquitecturas — fichas de diseño
+   Firma LIRN. Modo oscuro sobre negro, tipografía Manrope.
+
+   La paleta base es fija. Las superficies y los bordes NO son colores nuevos:
+   son mezclas de negro con --torns-deep y --torns-mid, calculadas una sola vez
+   y anotadas con su proporción, para que todo lo que se ve descienda de la paleta.
+   =========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Paleta base ------------------------------------------------------ */
+  --torns-deep: #0b4f78;  /* azul petróleo dominante */
+  --torns-mid: #1480b8;   /* azul medio */
+  --torns-panel: #3aa8dc; /* azul claro de panel */
+  --torns-air: #f3f9fd;   /* blanco azulado */
+  --black: #000000;       /* fondo */
+  --white: #ffffff;       /* texto */
+  --graphite: #6b7280;    /* gris de apoyo */
+  --activity: #00a8ff;    /* cian de acento: foco y detección */
+  --activity-ink: #006da8;/* acento sobre blanco */
+
+  /* --- Superficies: negro con un paso de --torns-deep -------------------- */
+  --surface-0: var(--black);  /* la página */
+  --surface-1: #01080c;       /* 10 % de --torns-deep */
+  --surface-2: #020d13;       /* 16 % */
+  --surface-3: #03131d;       /* 24 % */
+  --surface-4: #041926;       /* 32 % */
+
+  /* --- Bordes: pasos más altos de la misma línea ------------------------ */
+  --border-quiet: #06283c;    /* 50 % de --torns-deep */
+  --border-mid: #083754;      /* 70 % */
+  --border-strong: var(--torns-deep);
+
+  /* --- Texto ------------------------------------------------------------ */
+  --text-1: var(--white);     /* 21:1 sobre negro */
+  --text-2: #afb6be;          /* --torns-air + --graphite al 50 %; 10,2:1 */
+  --text-3: #8d94a0;          /* --graphite aclarado con --torns-air; 6,8:1 */
+
+  /* --- Acento ----------------------------------------------------------- */
+  --accent: var(--activity);          /* 8:1 sobre negro */
+  --accent-dim: #0a6c9e;              /* 70 % de --activity sobre negro */
+  --accent-wash: #001826;             /* 12 % de --activity sobre negro */
+  --accent-ink: var(--activity-ink);  /* el acento cuando va sobre blanco */
+
+  /* --- Tipografía -------------------------------------------------------
+     Manrope en todas partes. Un solo tipo, como manda la casa.             */
+  --font: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --size-display: clamp(2.5rem, 9vw, 5.5rem);
+  --size-title: clamp(1.5rem, 3.4vw, 2.125rem);
+  --size-section: clamp(1.125rem, 2vw, 1.375rem);
+  --size-figure: clamp(1.75rem, 4.5vw, 2.5rem);
+  --size-body: 1rem;
+  --size-small: 0.875rem;
+  --size-micro: 0.75rem;
+
+  /* El tracking depende del tamaño: apretado en lo grande, suelto en lo diminuto. */
+  --track-display: -0.04em;
+  --track-title: -0.025em;
+  --track-body: 0em;
+  --track-micro: 0.08em;
+
+  --leading-display: 0.95;
+  --leading-title: 1.1;
+  --leading-body: 1.55;
+
+  /* --- Espaciado -------------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* --- Geometría: decidida una vez, angular y técnica ------------------- */
+  --radius-s: 2px;
+  --radius-m: 4px;
+
+  /* --- Motion: curvas físicas, no rebotes decorativos ------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-press: 110ms;
+  --dur-quick: 200ms;
+  --dur-calm: 420ms;
+
+  /* --- Medidas del marco ------------------------------------------------ */
+  --gutter: clamp(1rem, 4vw, 3rem);
+  --measure: 68ch;
+  --topbar-h: 56px;
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --surface-1: #020a10;
+    --surface-2: #03111a;
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --text-2: var(--torns-air);
+    --text-3: var(--torns-air);
+    --border-quiet: var(--torns-mid);
+    --border-mid: var(--torns-panel);
+  }
+}
