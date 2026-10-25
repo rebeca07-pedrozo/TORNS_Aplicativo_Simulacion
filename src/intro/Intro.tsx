@@ -14,6 +14,7 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useCallback, useEffect, useRef } from 'react';
+import { LOGO } from '../recursos';
 import EscenaControl, { DETECCIONES } from './EscenaControl';
 import './intro.css';
 
@@ -245,7 +246,7 @@ export default function Intro({ alTerminar }: Props) {
       <img
         className="intro-logo"
         ref={logo}
-        src="/lirn-logo.png"
+        src={LOGO}
         alt=""
         aria-hidden="true"
         width={1194}
