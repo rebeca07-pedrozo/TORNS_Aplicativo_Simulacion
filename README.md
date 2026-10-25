@@ -32,6 +32,22 @@ puede correr de tres maneras distintas; lo que este simulador compara es la
 Cada etiqueta visible va acompañada de una frase en español que la explica: no se
 asume que quien lee sepa qué es MJPEG, ρ o TLS.
 
+## Dónde está publicado
+
+<https://rebeca07-pedrozo.github.io/TORNS_Aplicativo_Simulacion/>
+
+Cada vez que se empuja un cambio a la rama principal, GitHub Actions revisa los
+tipos, corre las pruebas del motor, compila y publica. El flujo está en
+`.github/workflows/deploy.yml`; si las pruebas fallan, no se publica nada.
+
+**Para activarlo la primera vez:** en el repositorio, *Settings → Pages →
+Build and deployment → Source:* elegir **GitHub Actions**. Hecho eso, el flujo
+se puede lanzar a mano desde la pestaña *Actions* o esperar al siguiente empujón.
+
+El sitio se sirve bajo el nombre del repositorio, así que `vite.config.ts` fija
+`base`. Si algún día se mueve a un dominio propio, basta con compilar con
+`BASE_PATH=/ npm run build`.
+
 ## Cómo correrlo
 
 ```bash
@@ -42,6 +58,10 @@ npm run preview    # sirve lo compilado
 npm test           # las pruebas del motor
 npm run typecheck  # revisión de tipos
 ```
+
+`npm run dev` y `npm run preview` sirven la página bajo
+`/TORNS_Aplicativo_Simulacion/`, igual que en producción, para que lo que se ve
+en local sea lo que se publica.
 
 ## El motor
 
@@ -101,6 +121,9 @@ src/
 public/
   lirn-logo.png    la marca, grande
   lirn-marca.png   la marca, para la barra superior
+  fuentes/         Manrope, servida desde el propio sitio
+.github/workflows/
+  deploy.yml       compila, prueba y publica en GitHub Pages
 ```
 
 ## Decisiones de diseño
@@ -117,6 +140,14 @@ public/
   está, no llega. Solo entra la primera pantalla, y solo una vez.
 - Solo se animan `transform` y `opacity`, así que ningún cuadro dispara
   recálculo de disposición.
+- **La página no pide nada a terceros.** Manrope se sirve desde el propio sitio
+  (`public/fuentes/`), así que se ve igual aunque no haya acceso a Google Fonts.
+  Incluye el subconjunto griego porque el modelo usa `ρ` y `Λ`.
+
+## Créditos
+
+Manrope, de Mikhail Sharanda, bajo SIL Open Font License 1.1. El texto de la
+licencia va en `public/fuentes/OFL.txt`.
 
 ## Alcance
 

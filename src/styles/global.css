@@ -1,5 +1,6 @@
 /* Base de la aplicación. Nada decorativo vive aquí. */
 
+@import './fuentes.css';
 @import './tokens.css';
 
 *,

@@ -10,6 +10,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { ESCENARIO_REFERENCIA } from '../engine/constants';
+import { LOGO, MARCA } from '../recursos';
 import { simular } from '../engine/modelo';
 import type { ErrorValidacion } from '../engine/types';
 import Alternativas from './Alternativas';
@@ -94,7 +95,7 @@ export default function Simulador({
             <img
               data-marca-app
               className="barra-logo"
-              src="/lirn-marca.png"
+              src={MARCA}
               alt="LIRN"
               width={216}
               height={65}
@@ -172,7 +173,7 @@ export default function Simulador({
       <footer className="pie">
         <div className="pie-interior">
           {/* La marca cierra la página, como la abrió. */}
-          <img className="pie-marca" src="/lirn-logo.png" alt="LIRN" width={1194} height={360} />
+          <img className="pie-marca" src={LOGO} alt="LIRN" width={1194} height={360} />
           <p className="pie-texto">
             Simulador de arquitecturas de despliegue de TORNS. Johel Arias, Rebeca Pedrozo Cueto y
             Hanna Cerinza Contreras. Transmilenio es caso de estudio, no cliente. Toda cifra de esta

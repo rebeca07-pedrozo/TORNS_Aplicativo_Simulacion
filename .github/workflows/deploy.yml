@@ -1,0 +1,70 @@
+# Compila el simulador y lo publica en GitHub Pages.
+#
+# Para que funcione hay que activarlo una vez en el repositorio:
+# Settings → Pages → Build and deployment → Source: GitHub Actions.
+name: Publicar en GitHub Pages
+
+on:
+  push:
+    branches:
+      - claude/cool-hamilton-2lz9s7
+      - main
+  # Permite lanzarlo a mano desde la pestaña Actions.
+  workflow_dispatch:
+
+# Permisos mínimos para que la acción pueda publicar.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Si llegan varios cambios seguidos, se publica el último y se cancelan los demás.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construir:
+    name: Construir
+    runs-on: ubuntu-latest
+    steps:
+      - name: Traer el código
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Revisar tipos
+        run: npm run typecheck
+
+      - name: Correr las pruebas del motor
+        run: npm test
+
+      - name: Compilar
+        run: npm run build
+
+      - name: Preparar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir el sitio compilado
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publicar:
+    name: Publicar
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Desplegar en GitHub Pages
+        id: despliegue
+        uses: actions/deploy-pages@v4
