@@ -1,0 +1,242 @@
+/* Intro cinematográfico. Solo transform y opacity se animan. */
+
+.intro-telon {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--surface-0);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.intro-escenario {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+/* --- La escena de control ------------------------------------------------ */
+
+.intro-escena {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  aspect-ratio: 1000 / 400;
+}
+
+.escena-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.escena-rejilla,
+.escena-tren,
+.escena-anden,
+.escena-conos,
+.escena-camaras > g,
+.intro-hud {
+  visibility: hidden; /* autoAlpha lo revela; evita el destello inicial */
+}
+
+/* .intro-capa no se oculta: solo marca lo que se desvanece al cerrar. */
+
+.cono {
+  opacity: 0.1;
+}
+
+/* --- Las personas y sus cajitas ------------------------------------------ */
+
+.intro-gente {
+  position: absolute;
+  inset: 0;
+}
+
+.persona {
+  position: absolute;
+  bottom: 19%; /* los pies quedan sobre la línea del andén */
+  transform: translateX(-50%);
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.figura {
+  display: block;
+  width: clamp(18px, 2.1vw, 28px);
+  height: auto;
+}
+
+/* El marco del detector, alrededor de la persona. */
+.caja {
+  position: absolute;
+  inset: -7px -9px -5px -9px;
+  border: 1.5px solid var(--activity);
+  border-radius: var(--radius-s);
+  visibility: hidden;
+}
+
+.caja-etiqueta {
+  position: absolute;
+  bottom: calc(100% + 3px);
+  left: -1.5px;
+  white-space: nowrap;
+  font-size: clamp(9px, 0.85vw, 12px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--activity);
+}
+
+/* --- Panel del operador --------------------------------------------------- */
+
+.intro-hud {
+  position: absolute;
+  top: clamp(1rem, 5vh, 4rem);
+  right: var(--gutter);
+  width: min(248px, 42vw);
+  padding: var(--space-4);
+  background: var(--surface-1);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+.intro-hud-rotulo {
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.intro-hud-cifra {
+  margin-top: var(--space-1);
+  font-size: clamp(2rem, 4.6vw, 3rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--activity);
+}
+
+.intro-decision {
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-1);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--radius-s);
+  visibility: hidden;
+}
+
+/* --- El tren expreso que cierra ------------------------------------------- */
+
+.intro-expreso {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 120%;
+  height: clamp(130px, 26vh, 240px);
+  margin-top: calc(clamp(130px, 26vh, 240px) / -2);
+  visibility: hidden;
+  will-change: transform;
+}
+
+.intro-expreso svg {
+  width: 100%;
+  height: 100%;
+  /* El estirón horizontal lee como velocidad sin costar un filtro por cuadro. */
+  transform: scaleX(1.18);
+}
+
+/* --- El logo -------------------------------------------------------------- */
+
+.intro-logo {
+  position: relative;
+  z-index: 2;
+  width: min(44vw, 420px);
+  height: auto;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* --- Saltar --------------------------------------------------------------- */
+
+.intro-saltar {
+  position: absolute;
+  right: var(--gutter);
+  bottom: calc(var(--space-5) + env(safe-area-inset-bottom, 0px));
+  z-index: 3;
+  padding: var(--space-3) var(--space-5);
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    color var(--dur-press) var(--ease-out),
+    border-color var(--dur-press) var(--ease-out);
+}
+
+.intro-saltar:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .intro-saltar:hover {
+    color: var(--text-1);
+    border-color: var(--torns-mid);
+  }
+}
+
+/* --- Teléfono: la película se deja ver como una franja ancha --------------- */
+
+@media (max-width: 720px) {
+  .intro-escena {
+    max-width: none;
+  }
+
+  .intro-hud {
+    top: auto;
+    bottom: calc(var(--space-9) + env(safe-area-inset-bottom, 0px));
+    right: auto;
+    left: var(--gutter);
+    width: min(260px, 72vw);
+  }
+
+  .intro-logo {
+    width: min(62vw, 340px);
+  }
+}
+
+/* --- Movimiento reducido: el estado final, sin película -------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .escena-rejilla,
+  .escena-tren,
+  .escena-anden,
+  .escena-conos,
+  .escena-camaras > g,
+  .persona,
+  .caja,
+  .intro-hud,
+  .intro-decision {
+    visibility: visible;
+  }
+
+  .intro-expreso {
+    display: none;
+  }
+
+  .intro-logo {
+    position: absolute;
+    top: var(--space-4);
+    left: var(--gutter);
+    width: 92px;
+  }
+}

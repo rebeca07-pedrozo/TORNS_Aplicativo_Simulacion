@@ -1,0 +1,1517 @@
+/* =========================================================================
+   La app del simulador. Pantalla de trabajo: paneles sobrios, bordes
+   discretos, el cian reservado para los datos y el foco.
+   ========================================================================= */
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--surface-0);
+}
+
+/* --- Barra superior ------------------------------------------------------ */
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--surface-0) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--border-quiet);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+@supports not (backdrop-filter: blur(1px)) {
+  .barra {
+    background: var(--surface-0);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .barra {
+    background: var(--surface-0);
+    backdrop-filter: none;
+  }
+}
+
+.barra-interior {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: var(--topbar-h);
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.barra-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.barra-logo {
+  width: 72px;
+  height: auto;
+  flex: none;
+}
+
+.barra-separador {
+  width: 1px;
+  height: 22px;
+  background: var(--border-mid);
+  flex: none;
+}
+
+.barra-producto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: var(--size-small);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+  color: var(--text-1);
+}
+
+.barra-producto-nota {
+  font-size: var(--size-micro);
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.barra-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* El sello es cromo, no dato: el cian se reserva para lo que el modelo calcula. */
+.barra-sello {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px var(--space-3);
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-s);
+  white-space: nowrap;
+}
+
+.barra-sello::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--torns-mid);
+  border-radius: 50%;
+}
+
+/* --- Botones -------------------------------------------------------------- */
+
+.boton-secundario {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+  white-space: nowrap;
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    color var(--dur-press) var(--ease-out),
+    border-color var(--dur-press) var(--ease-out);
+}
+
+.boton-secundario:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton-secundario:hover {
+    color: var(--text-1);
+    border-color: var(--torns-mid);
+  }
+}
+
+.boton-discreto {
+  background: transparent;
+}
+
+/* --- Marco de la página --------------------------------------------------- */
+
+.contenido {
+  flex: 1;
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: var(--space-8) var(--gutter) var(--space-9);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* --- Portada -------------------------------------------------------------- */
+
+.portada {
+  max-width: 54ch;
+}
+
+.portada-titulo {
+  font-size: var(--size-title);
+  font-weight: 800;
+  letter-spacing: var(--track-title);
+}
+
+.portada-bajada {
+  margin-top: var(--space-4);
+  font-size: var(--size-body);
+  color: var(--text-2);
+  max-width: var(--measure);
+}
+
+/* --- Bloques -------------------------------------------------------------- */
+
+.bloque {
+  padding: var(--space-6);
+  background: var(--surface-1);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+.bloque-encabezado {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-6);
+}
+
+.bloque-titulo {
+  font-size: var(--size-section);
+  font-weight: 700;
+}
+
+.bloque-bajada {
+  margin-top: var(--space-2);
+  max-width: var(--measure);
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.etiqueta-lectura {
+  padding: 4px var(--space-3);
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-s);
+  white-space: nowrap;
+}
+
+/* --- Palancas de entrada --------------------------------------------------- */
+
+.palancas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-5);
+}
+
+.palanca {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+.palanca-con-error {
+  border-color: var(--torns-panel);
+  background: var(--surface-3);
+}
+
+.palanca-pregunta {
+  display: block;
+  font-size: var(--size-body);
+  font-weight: 700;
+  color: var(--text-1);
+  line-height: 1.35;
+}
+
+.palanca-simbolo {
+  display: inline-grid;
+  place-items: center;
+  width: 1.65em;
+  height: 1.65em;
+  margin-right: var(--space-2);
+  font-size: var(--size-small);
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--radius-s);
+  vertical-align: 2px;
+}
+
+.palanca-explicacion {
+  margin-top: var(--space-2);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+.palanca-mandos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.palanca-numero {
+  width: 5.5ch;
+  padding: var(--space-2) var(--space-3);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-1);
+  background: var(--surface-0);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-s);
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.palanca-numero::-webkit-outer-spin-button,
+.palanca-numero::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.palanca-unidad {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--size-small);
+  line-height: 1.3;
+  color: var(--text-2);
+}
+
+.palanca-rango {
+  font-size: var(--size-micro);
+  color: var(--text-3);
+}
+
+/* Sí y no pesan lo mismo: dos columnas iguales. */
+.palanca-mandos-dos {
+  grid-template-columns: 1fr 1fr;
+}
+
+.palanca-deslizador {
+  grid-column: 1 / -1;
+  width: 100%;
+  /* 40 px de alto para el dedo, aunque la pista que se ve mida 4. */
+  height: 40px;
+  margin: var(--space-1) 0 0;
+  appearance: none;
+  background: transparent;
+  touch-action: pan-y; /* el deslizador toma el eje horizontal, la página el vertical */
+}
+
+.palanca-deslizador::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--surface-4);
+  border-radius: 2px;
+}
+
+.palanca-deslizador::-moz-range-track {
+  height: 4px;
+  background: var(--surface-4);
+  border-radius: 2px;
+}
+
+.palanca-deslizador::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -8px;
+  background: var(--accent);
+  border: 3px solid var(--surface-0);
+  border-radius: 50%;
+  transition: transform var(--dur-press) var(--ease-out);
+}
+
+.palanca-deslizador::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: var(--accent);
+  border: 3px solid var(--surface-0);
+  border-radius: 50%;
+}
+
+.palanca-deslizador::-moz-range-progress {
+  height: 4px;
+  background: var(--accent-dim);
+  border-radius: 2px;
+}
+
+.palanca-deslizador:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+
+/* Dos opciones de sí/no */
+.opcion {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--size-body);
+  font-weight: 700;
+  color: var(--text-3);
+  background: var(--surface-0);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-s);
+  min-width: 72px;
+  transition:
+    transform var(--dur-press) var(--ease-out),
+    color var(--dur-press) var(--ease-out),
+    background-color var(--dur-press) var(--ease-out),
+    border-color var(--dur-press) var(--ease-out);
+}
+
+.opcion:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .opcion:hover {
+    color: var(--text-1);
+    border-color: var(--torns-mid);
+  }
+}
+
+.opcion-activa {
+  color: var(--black);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.palanca-nota,
+.palanca-error {
+  margin-top: var(--space-4);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+.palanca-error {
+  padding: var(--space-3) var(--space-4);
+  color: var(--torns-air);
+  background: var(--surface-4);
+  border: 1px solid var(--torns-deep);
+  border-radius: var(--radius-s);
+}
+
+/* --- Carga total ---------------------------------------------------------- */
+
+.carga-total {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.carga-rotulo {
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.carga-cifra {
+  font-size: var(--size-figure);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+
+.carga-unidad,
+.carga-vacia {
+  flex: 1 1 24ch;
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+/* --- Recomendación: el bloque más grande de la página ---------------------- */
+
+.recomendacion {
+  background: var(--surface-2);
+  border-color: var(--border-mid);
+}
+
+.recomendacion-nombre {
+  margin-top: var(--space-5);
+  font-size: var(--size-figure);
+  font-weight: 800;
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-title);
+  color: var(--text-1);
+}
+
+.recomendacion-resumen {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+  font-size: var(--size-body);
+  color: var(--text-2);
+}
+
+.recomendacion-cifras {
+  display: grid;
+  margin-bottom: 0;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-6) 0 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.recomendacion-cifras dt {
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.recomendacion-cifras dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--size-figure);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-1);
+}
+
+.recomendacion-cifras .unidad {
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: 0;
+}
+
+.recomendacion-cifras p {
+  margin-top: var(--space-2);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+/* La explicación a la izquierda, la cuenta a la derecha: así no queda media
+   pantalla vacía debajo del párrafo. */
+.recomendacion-cierre {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
+  align-items: start;
+  gap: var(--space-7);
+  margin-top: var(--space-6);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.recomendacion-explicacion {
+  margin-top: var(--space-5);
+  max-width: var(--measure);
+  font-size: var(--size-body);
+  color: var(--text-2);
+}
+
+/* Dentro del cierre a dos columnas el margen lo pone la rejilla. */
+.recomendacion-cierre .recomendacion-explicacion {
+  margin-top: 0;
+  max-width: none;
+}
+
+/* --- Desglose del puntaje -------------------------------------------------- */
+
+.desglose {
+  padding: var(--space-5);
+  background: var(--surface-1);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+.desglose-titulo {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.desglose-bajada {
+  margin-top: var(--space-2);
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.desglose-tabla {
+  width: 100%;
+  margin-top: var(--space-4);
+  border-collapse: collapse;
+  font-size: var(--size-small);
+}
+
+.desglose-tabla th,
+.desglose-tabla td {
+  padding: var(--space-2) 0;
+  text-align: right;
+  font-weight: 500;
+  color: var(--text-2);
+}
+
+.desglose-tabla thead th {
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+  border-bottom: 1px solid var(--border-quiet);
+}
+
+.desglose-tabla th:first-child,
+.desglose-tabla tbody th,
+.desglose-tabla tfoot th {
+  text-align: left;
+}
+
+.desglose-tabla tbody th {
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.desglose-tabla tbody td:last-child {
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.desglose-descuento th,
+.desglose-descuento td {
+  color: var(--text-3);
+}
+
+.desglose-tabla tfoot th,
+.desglose-tabla tfoot td {
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-mid);
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.desglose-nota {
+  margin-top: var(--space-3);
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.lista-fallos {
+  list-style: none;
+  margin-top: var(--space-5);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.lista-fallos li {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-s);
+}
+
+.lista-fallos-nombre {
+  font-size: var(--size-body);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.lista-fallos-motivo,
+.lista-fallos-detalle {
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.lista-fallos-detalle {
+  color: var(--text-3);
+}
+
+/* --- Aviso de estimación -------------------------------------------------- */
+
+.aviso {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-quiet);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+.aviso-punto {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: 0.55em;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* --- Tarjetas por alternativa ---------------------------------------------- */
+
+/* Qué mide cada símbolo, dicho una vez para las tres tarjetas. */
+.leyenda {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4) var(--space-5);
+  margin: 0 0 var(--space-6);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--border-quiet);
+}
+
+.leyenda-termino {
+  display: grid;
+  align-content: start;
+  gap: var(--space-1);
+}
+
+.leyenda-termino dt {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.leyenda-titulo {
+  font-size: var(--size-small);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.leyenda-unidad {
+  font-size: var(--size-micro);
+  color: var(--text-3);
+}
+
+.leyenda-termino dd {
+  margin: 0;
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.rejilla-alternativas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: var(--space-5);
+}
+
+.alternativa {
+  padding: var(--space-5);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+/* Cuando caben las tres columnas, las tarjetas comparten filas: cada indicador
+   queda a la misma altura en las tres, que es lo único que hace comparable una
+   comparación. Por debajo de ese ancho se apilan y la alineación sobra. */
+@media (min-width: 1100px) {
+  @supports (grid-template-rows: subgrid) {
+    .rejilla-alternativas {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows:
+        auto               /* encabezado */
+        repeat(5, auto)    /* los cinco indicadores */
+        auto               /* aviso de saturación */
+        repeat(3, auto)    /* los tres requisitos */
+        auto auto;         /* elegible y puntaje */
+      /* Sin separación entre filas: el ritmo lo pone el relleno de cada fila. */
+      row-gap: 0;
+    }
+
+    .alternativa {
+      display: grid;
+      grid-row: 1 / -1;
+      grid-template-rows: subgrid;
+      align-content: start;
+    }
+
+    .alternativa-indicadores {
+      grid-row: span 5;
+      grid-template-rows: subgrid;
+    }
+
+    .alternativa-requisitos {
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+    }
+  }
+}
+
+.alternativa-recomendada {
+  border-color: var(--accent-dim);
+  background: var(--surface-3);
+}
+
+.alternativa-fuera {
+  /* Fuera de juego: se apaga, pero sigue legible y sigue diciendo por qué. */
+  background: var(--surface-1);
+  border-style: dashed;
+}
+
+.alternativa-encabezado {
+  padding-bottom: var(--space-4);
+}
+
+.alternativa-nombre {
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.alternativa-resumen {
+  margin-top: var(--space-2);
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.alternativa-sello {
+  display: inline-block;
+  margin-top: var(--space-3);
+  padding: 3px var(--space-3);
+  font-size: var(--size-micro);
+  font-weight: 700;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--black);
+  background: var(--accent);
+  border-radius: var(--radius-s);
+}
+
+.alternativa-indicadores {
+  display: grid;
+  margin: 0;
+}
+
+.indicador {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border-quiet);
+}
+
+.indicador dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.indicador-simbolo {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  font-size: var(--size-micro);
+  font-weight: 800;
+  color: var(--text-2);
+  background: var(--surface-0);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-s);
+}
+
+.indicador-titulo {
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.indicador-valor {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text-1);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.indicador-valor .unidad {
+  font-size: var(--size-micro);
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: 0;
+}
+
+.alternativa-aviso-fila:not(:empty) {
+  padding-top: var(--space-4);
+}
+
+.alternativa-aviso {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--size-small);
+  color: var(--torns-air);
+  background: var(--surface-4);
+  border: 1px solid var(--torns-deep);
+  border-radius: var(--radius-s);
+}
+
+.alternativa-requisitos {
+  list-style: none;
+  display: grid;
+  margin-top: var(--space-4);
+}
+
+.alternativa-requisitos li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border-quiet);
+}
+
+.requisito-rotulo {
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+/* Un sí o un no: palabra, forma y tono, en ese orden de importancia. */
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: none;
+  padding: 3px var(--space-3);
+  font-size: var(--size-micro);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-s);
+  white-space: nowrap;
+}
+
+.marca-figura {
+  width: 8px;
+  height: 8px;
+  flex: none;
+}
+
+.marca-si {
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-dim);
+}
+
+.marca-si .marca-figura {
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.marca-no {
+  color: var(--text-2);
+  background: var(--surface-0);
+  border: 1px dashed var(--border-mid);
+}
+
+.marca-no .marca-figura {
+  border: 1.5px solid var(--text-3);
+  border-radius: 50%;
+}
+
+/* Informativo: ni premio ni castigo. */
+.marca-neutra {
+  color: var(--text-2);
+  background: var(--surface-0);
+  border: 1px solid var(--border-quiet);
+}
+
+.marca-neutra .marca-figura {
+  background: var(--border-mid);
+}
+
+.alternativa-elegible,
+.alternativa-puntaje {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.alternativa-elegible {
+  margin-top: var(--space-3);
+  padding: var(--space-4) 0 var(--space-3);
+  border-top: 1px solid var(--border-mid);
+}
+
+.alternativa-puntaje {
+  padding-bottom: var(--space-1);
+}
+
+.puntaje-cifra {
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+}
+
+.alternativa-fuera .puntaje-cifra {
+  color: var(--text-2);
+}
+
+.puntaje-vacio {
+  max-width: 30ch;
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--text-3);
+  text-align: right;
+}
+
+.nota-requisitos {
+  max-width: var(--measure);
+  margin-top: var(--space-5);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border-quiet);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+.nota-requisitos strong {
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+/* --- Gráficos -------------------------------------------------------------- */
+
+.rejilla-graficos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-5);
+}
+
+.grafico {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: var(--space-5);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+.grafico-titulo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--size-body);
+  font-weight: 700;
+}
+
+.grafico-explicacion {
+  margin-top: var(--space-2);
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--text-3);
+}
+
+.grafico-filas {
+  list-style: none;
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+/* Cada barra va pegada a su nombre y a su cifra. */
+.grafico-fila {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.grafico-fila-id {
+  font-size: var(--size-micro);
+  font-weight: 700;
+  color: var(--text-3);
+}
+
+.grafico-fila-nombre {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.grafico-fila-valor {
+  font-weight: 700;
+  color: var(--text-1);
+  white-space: nowrap;
+}
+
+.grafico-carril {
+  position: relative;
+  display: block;
+  grid-column: 1 / -1;
+  height: 14px;
+  background: var(--surface-0);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+
+.grafico-barra {
+  display: block;
+  height: 100%;
+  background: var(--torns-deep);
+  border-right: 1px solid var(--torns-mid);
+}
+
+.es-recomendada .grafico-barra {
+  background: var(--accent);
+  border-right-color: var(--accent);
+}
+
+.es-recomendada .grafico-fila-valor,
+.es-recomendada .grafico-fila-id {
+  color: var(--accent);
+}
+
+.es-fuera .grafico-barra {
+  background: var(--surface-4);
+  border-right: 1px dashed var(--text-3);
+}
+
+/* Se salió de la escala: el borde abierto lo dice sin inventar una longitud. */
+.es-cortada .grafico-barra {
+  border-right: 2px dashed var(--torns-panel);
+}
+
+.grafico-umbral-marca {
+  position: absolute;
+  inset-block: 0;
+  width: 0;
+  border-left: 1px dashed var(--torns-panel);
+}
+
+.grafico-fuera {
+  font-size: var(--size-micro);
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.grafico-umbral-nota {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  min-height: 1lh;
+  font-size: var(--size-micro);
+  color: var(--text-3);
+}
+
+/* Con varias columnas, los gráficos de una misma fila alinean sus barras
+   aunque sus explicaciones ocupen distinto número de líneas. */
+@media (min-width: 760px) {
+  @supports (grid-template-rows: subgrid) {
+    .rejilla-graficos {
+      grid-template-rows: auto auto auto;
+    }
+
+    .grafico {
+      display: grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      align-content: start;
+    }
+
+    .grafico-umbral-nota {
+      align-self: end;
+      margin-top: 0;
+    }
+  }
+}
+
+/* --- Ficha ---------------------------------------------------------------- */
+
+.ficha-cuerpo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-7);
+}
+
+.ficha-columna {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.ficha-columna > .ficha-subtitulo:first-child {
+  margin-top: 0;
+}
+
+.ficha-subtitulo {
+  margin-top: var(--space-4);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--accent);
+}
+
+.ficha-subtitulo-ancho {
+  margin-top: var(--space-7);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border-quiet);
+}
+
+.ficha-datos {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.ficha-datos > div {
+  display: grid;
+  grid-template-columns: minmax(8ch, 15ch) 1fr;
+  gap: var(--space-4);
+  align-items: baseline;
+}
+
+.ficha-datos dt {
+  font-size: var(--size-small);
+  font-weight: 600;
+  color: var(--text-3);
+}
+
+.ficha-datos dd {
+  margin: 0;
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.ficha-enfasis {
+  color: var(--text-1);
+  font-weight: 700;
+}
+
+.lista-requisitos {
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.lista-requisitos li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-s);
+}
+
+.requisito-obligatorio {
+  border-color: var(--border-mid);
+  background: var(--surface-3);
+}
+
+.requisito-id {
+  grid-row: 1;
+  font-size: var(--size-micro);
+  font-weight: 800;
+  color: var(--text-3);
+}
+
+.requisito-titulo {
+  grid-row: 1;
+  font-size: var(--size-small);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.requisito-tipo {
+  grid-column: 2;
+  font-size: var(--size-micro);
+  font-weight: 600;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.requisito-explicacion {
+  grid-column: 2;
+  margin-top: var(--space-1);
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.lista-simple {
+  list-style: none;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.lista-simple li {
+  position: relative;
+  padding-left: var(--space-4);
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.lista-simple li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 5px;
+  height: 5px;
+  background: var(--torns-mid);
+  border-radius: 50%;
+}
+
+.rejilla-descripciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.descripcion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  background: var(--surface-2);
+  border: 1px solid var(--border-quiet);
+  border-radius: var(--radius-m);
+}
+
+.descripcion-nombre {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.descripcion-resumen {
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+.descripcion-riesgo {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-quiet);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+.descripcion-riesgo-rotulo {
+  display: block;
+  font-size: var(--size-small);
+  font-weight: 700;
+  color: var(--text-2);
+}
+
+/* --- Glosario -------------------------------------------------------------- */
+
+.rejilla-glosario {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4) var(--space-6);
+  margin: 0;
+}
+
+.termino {
+  display: grid;
+  align-content: start; /* sin esto, las filas se estiran y abren huecos */
+  gap: var(--space-1);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--border-quiet);
+}
+
+.termino dt {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.termino-etiqueta {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.6rem;
+  padding: 2px 6px;
+  font-size: var(--size-micro);
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--radius-s);
+}
+
+.termino-titulo {
+  font-size: var(--size-small);
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.termino-unidad {
+  font-size: var(--size-micro);
+  color: var(--text-3);
+}
+
+.termino dd {
+  margin: 0;
+  font-size: var(--size-small);
+  color: var(--text-2);
+}
+
+/* --- Sin cálculo ----------------------------------------------------------- */
+
+.bloque-vacio {
+  border-style: dashed;
+  border-color: var(--border-mid);
+}
+
+.lista-errores {
+  list-style: none;
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.lista-errores li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  font-size: var(--size-small);
+  color: var(--torns-air);
+  background: var(--surface-3);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-s);
+}
+
+.lista-errores-campo {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: var(--size-small);
+  font-weight: 800;
+  color: var(--text-1);
+  background: var(--surface-0);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-s);
+}
+
+/* --- Pie ------------------------------------------------------------------- */
+
+.pie {
+  border-top: 1px solid var(--border-quiet);
+  background: var(--surface-1);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pie-interior {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: var(--space-7) var(--gutter);
+}
+
+.pie-marca {
+  flex: none;
+  width: clamp(120px, 16vw, 190px);
+  height: auto;
+}
+
+.pie-texto {
+  flex: 1 1 34ch;
+  max-width: var(--measure);
+  font-size: var(--size-small);
+  color: var(--text-3);
+}
+
+/* --- Teléfono --------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .contenido {
+    padding-top: var(--space-6);
+    gap: var(--space-6);
+  }
+
+  .bloque {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .bloque-encabezado {
+    margin-bottom: var(--space-5);
+  }
+
+  .barra-producto-nota {
+    display: none;
+  }
+
+  .barra-sello {
+    display: none;
+  }
+
+  .alternativa-puntaje {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .puntaje-vacio {
+    text-align: left;
+    max-width: none;
+  }
+
+  .ficha-datos > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .ficha-cuerpo {
+    gap: var(--space-6);
+  }
+}
+
+@media (max-width: 1000px) {
+  .recomendacion-cierre {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+}
