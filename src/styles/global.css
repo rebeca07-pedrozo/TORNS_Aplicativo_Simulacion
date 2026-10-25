@@ -38,6 +38,7 @@ h2,
 h3,
 h4 {
   margin: 0;
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-5));
   font-weight: 700;
   line-height: var(--leading-title);
   letter-spacing: var(--track-title);

@@ -165,6 +165,7 @@
 /* --- Portada -------------------------------------------------------------- */
 
 .portada {
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-5));
   max-width: 54ch;
 }
 
@@ -184,6 +185,8 @@
 /* --- Bloques -------------------------------------------------------------- */
 
 .bloque {
+  /* La barra es fija: sin este margen, saltar a una sección esconde su título. */
+  scroll-margin-top: calc(var(--topbar-h) + var(--space-5));
   padding: var(--space-6);
   background: var(--surface-1);
   border: 1px solid var(--border-quiet);
