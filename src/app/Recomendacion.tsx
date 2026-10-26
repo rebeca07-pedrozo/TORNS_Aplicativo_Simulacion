@@ -16,11 +16,9 @@ export default function Recomendacion({ salida }: { salida: ResultadoSimulacion 
   const ficha = ganadora ? ALTERNATIVAS.find((a) => a.id === ganadora.id)! : null;
 
   return (
-    <section
-      className={ganadora ? 'bloque recomendacion' : 'bloque recomendacion recomendacion-sin-ganadora'}
-      aria-labelledby="titulo-recomendacion"
-    >
-      <h2 id="titulo-recomendacion" className="bloque-titulo">
+    <section className="banda campo-blanco" aria-labelledby="titulo-recomendacion">
+      <div className="banda-interior">
+      <h2 id="titulo-recomendacion" className="banda-titulo">
         Recomendación
       </h2>
 
@@ -104,6 +102,7 @@ export default function Recomendacion({ salida }: { salida: ResultadoSimulacion 
       )}
 
       <AvisoEstimacion />
+      </div>
     </section>
   );
 }

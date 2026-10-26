@@ -6,7 +6,7 @@
   z-index: 100;
   display: grid;
   place-items: center;
-  background: var(--surface-0);
+  background: var(--fondo);
   overflow: hidden;
   touch-action: none;
 }
@@ -20,74 +20,27 @@
 
 /* --- La escena de control ------------------------------------------------ */
 
-.intro-escena {
-  position: relative;
-  width: 100%;
-  max-width: 1400px;
-  aspect-ratio: 1000 / 400;
-}
-
-.escena-svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.escena-rejilla,
-.escena-tren,
-.escena-anden,
-.escena-conos,
-.escena-camaras > g,
-.intro-hud {
+/* Dentro del intro todo entra animado, así que arranca oculto. Fuera del
+   intro —en la portada— el andén se ve quieto, sin pasar por aquí. */
+.intro-telon .escena-rejilla,
+.intro-telon .escena-tren,
+.intro-telon .escena-anden,
+.intro-telon .escena-conos,
+.intro-telon .escena-camaras > g,
+.intro-telon .persona,
+.intro-telon .caja,
+.intro-telon .intro-decision,
+.intro-telon .intro-hud {
   visibility: hidden; /* autoAlpha lo revela; evita el destello inicial */
 }
 
 /* .intro-capa no se oculta: solo marca lo que se desvanece al cerrar. */
 
-.cono {
-  opacity: 0.1;
-}
-
-/* --- Las personas y sus cajitas ------------------------------------------ */
-
-.intro-gente {
-  position: absolute;
-  inset: 0;
-}
-
-.persona {
-  position: absolute;
-  bottom: 19%; /* los pies quedan sobre la línea del andén */
-  transform: translateX(-50%);
-  visibility: hidden;
-  will-change: transform, opacity;
-}
-
-.figura {
-  display: block;
-  width: clamp(18px, 2.1vw, 28px);
-  height: auto;
-}
-
-/* El marco del detector, alrededor de la persona. */
-.caja {
-  position: absolute;
-  inset: -7px -9px -5px -9px;
-  border: 1.5px solid var(--activity);
-  border-radius: var(--radius-s);
-  visibility: hidden;
-}
-
-.caja-etiqueta {
-  position: absolute;
-  bottom: calc(100% + 3px);
-  left: -1.5px;
-  white-space: nowrap;
-  font-size: clamp(9px, 0.85vw, 12px);
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: var(--activity);
+.intro-escena {
+  position: relative;
+  width: 100%;
+  max-width: 1400px;
+  aspect-ratio: 1000 / 400;
 }
 
 /* --- Panel del operador --------------------------------------------------- */
@@ -98,8 +51,8 @@
   right: var(--gutter);
   width: min(248px, 42vw);
   padding: var(--space-4);
-  background: var(--surface-1);
-  border: 1px solid var(--border-quiet);
+  background: var(--panel);
+  border: 1px solid var(--borde);
   border-radius: var(--radius-m);
 }
 
@@ -108,7 +61,7 @@
   font-weight: 600;
   letter-spacing: var(--track-micro);
   text-transform: uppercase;
-  color: var(--text-3);
+  color: var(--tinta-3);
 }
 
 .intro-hud-cifra {
@@ -125,11 +78,10 @@
   padding: var(--space-2) var(--space-3);
   font-size: var(--size-small);
   font-weight: 600;
-  color: var(--text-1);
-  background: var(--accent-wash);
-  border: 1px solid var(--accent-dim);
+  color: var(--tinta);
+  background: var(--panel-hundido);
+  border: 1px solid var(--torns-mid);
   border-radius: var(--radius-s);
-  visibility: hidden;
 }
 
 /* --- El tren expreso que cierra ------------------------------------------- */
@@ -173,9 +125,9 @@
   padding: var(--space-3) var(--space-5);
   font-size: var(--size-small);
   font-weight: 600;
-  color: var(--text-2);
-  background: var(--surface-2);
-  border: 1px solid var(--border-quiet);
+  color: var(--tinta-2);
+  background: var(--panel);
+  border: 1px solid var(--borde);
   border-radius: var(--radius-m);
   transition:
     transform var(--dur-press) var(--ease-out),
@@ -189,7 +141,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .intro-saltar:hover {
-    color: var(--text-1);
+    color: var(--tinta);
     border-color: var(--torns-mid);
   }
 }
@@ -217,15 +169,15 @@
 /* --- Movimiento reducido: el estado final, sin película -------------------- */
 
 @media (prefers-reduced-motion: reduce) {
-  .escena-rejilla,
-  .escena-tren,
-  .escena-anden,
-  .escena-conos,
-  .escena-camaras > g,
-  .persona,
-  .caja,
-  .intro-hud,
-  .intro-decision {
+  .intro-telon .escena-rejilla,
+  .intro-telon .escena-tren,
+  .intro-telon .escena-anden,
+  .intro-telon .escena-conos,
+  .intro-telon .escena-camaras > g,
+  .intro-telon .persona,
+  .intro-telon .caja,
+  .intro-telon .intro-hud,
+  .intro-telon .intro-decision {
     visibility: visible;
   }
 

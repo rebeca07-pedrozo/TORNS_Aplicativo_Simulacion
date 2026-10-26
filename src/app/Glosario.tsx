@@ -7,13 +7,14 @@ import { GLOSARIO } from '../contenido/glosario';
 
 export default function Glosario() {
   return (
-    <section className="bloque" aria-labelledby="titulo-glosario">
-      <header className="bloque-encabezado">
+    <section className="banda campo-blanco" aria-labelledby="titulo-glosario">
+      <div className="banda-interior">
+      <header className="banda-encabezado">
         <div>
-          <h2 id="titulo-glosario" className="bloque-titulo">
+          <h2 id="titulo-glosario" className="banda-titulo">
             Glosario
           </h2>
-          <p className="bloque-bajada">
+          <p className="banda-bajada">
             Cada palabra técnica que aparece en esta página, dicha en español corriente.
           </p>
         </div>
@@ -32,6 +33,7 @@ export default function Glosario() {
           </div>
         ))}
       </dl>
+      </div>
     </section>
   );
 }

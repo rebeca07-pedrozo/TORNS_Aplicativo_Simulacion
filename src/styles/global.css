@@ -23,8 +23,10 @@ body,
 
 body {
   margin: 0;
-  background: var(--surface-0);
-  color: var(--text-1);
+  /* El azul de la marca queda debajo de todo: al rebotar el scroll se ve
+     el color de LIRN, no un blanco de navegador. */
+  background: var(--torns-deep);
+  color: var(--white);
   font-family: var(--font);
   font-size: var(--size-body);
   line-height: var(--leading-body);
@@ -88,7 +90,7 @@ button {
 }
 
 a {
-  color: var(--accent);
+  color: var(--acento, var(--activity));
   text-underline-offset: 0.2em;
 }
 
@@ -100,19 +102,19 @@ select {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--acento, var(--activity));
   outline-offset: 3px;
   border-radius: var(--radius-s);
 }
 
 ::selection {
-  background: var(--accent-dim);
-  color: var(--white);
+  background: var(--activity);
+  color: var(--black);
 }
 
 /* Las superficies que pone el navegador también son de la casa. */
 :root {
-  scrollbar-color: var(--border-mid) var(--surface-0);
+  scrollbar-color: var(--torns-mid) var(--torns-deep);
   scrollbar-width: thin;
 }
 
@@ -122,22 +124,22 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface-0);
+  background: var(--torns-deep);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-mid);
-  border: 3px solid var(--surface-0);
+  background: var(--torns-mid);
+  border: 3px solid var(--torns-deep);
   border-radius: 99px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--torns-deep);
+  background: var(--torns-panel);
 }
 
 input,
 textarea {
-  caret-color: var(--accent);
+  caret-color: var(--acento, var(--activity));
 }
 
 /* El guion de "fuera de rango" y los signos del desglose se leen mejor así. */
@@ -153,7 +155,7 @@ textarea {
   z-index: 200;
   padding: var(--space-2) var(--space-4);
   color: var(--black);
-  background: var(--accent);
+  background: var(--activity);
   border-radius: var(--radius-m);
   font-weight: 700;
   transform: translateY(-200%);
