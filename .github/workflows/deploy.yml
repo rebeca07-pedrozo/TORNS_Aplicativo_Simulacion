@@ -1,24 +1,17 @@
-# Compila el simulador y lo publica en GitHub Pages.
-#
-# Para que funcione hay que activarlo una vez en el repositorio:
-# Settings → Pages → Build and deployment → Source: GitHub Actions.
+
 name: Publicar en GitHub Pages
 
 on:
   push:
     branches:
-      - claude/cool-hamilton-2lz9s7
       - main
-  # Permite lanzarlo a mano desde la pestaña Actions.
   workflow_dispatch:
 
-# Permisos mínimos para que la acción pueda publicar.
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Si llegan varios cambios seguidos, se publica el último y se cancelan los demás.
 concurrency:
   group: pages
   cancel-in-progress: true
