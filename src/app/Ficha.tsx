@@ -22,13 +22,14 @@ const ETIQUETA_TIPO = {
 
 export default function Ficha() {
   return (
-    <section className="bloque" aria-labelledby="titulo-ficha">
-      <header className="bloque-encabezado">
+    <section className="banda campo-aire" aria-labelledby="titulo-ficha">
+      <div className="banda-interior">
+      <header className="banda-encabezado">
         <div>
-          <h2 id="titulo-ficha" className="bloque-titulo">
+          <h2 id="titulo-ficha" className="banda-titulo">
             Ficha del proyecto
           </h2>
-          <p className="bloque-bajada">
+          <p className="banda-bajada">
             Lo que el simulador da por fijo. No se edita desde aquí: el usuario del simulador
             configura escenarios, no la ficha.
           </p>
@@ -116,7 +117,7 @@ export default function Ficha() {
       </div>
 
       <h3 className="ficha-subtitulo ficha-subtitulo-ancho">Las tres alternativas comparadas</h3>
-      <p className="bloque-bajada">
+      <p className="banda-bajada">
         El mismo TORNS, desplegado de tres formas. Lo que cambia es dónde corre cada pieza y qué
         viaja por la red.
       </p>
@@ -137,6 +138,7 @@ export default function Ficha() {
             </p>
           </article>
         ))}
+      </div>
       </div>
     </section>
   );

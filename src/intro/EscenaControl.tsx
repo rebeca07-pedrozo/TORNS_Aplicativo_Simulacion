@@ -36,13 +36,13 @@ function Camara({ x }: { x: number }) {
           width="74"
           height="34"
           rx="4"
-          fill="var(--surface-3)"
+          fill="var(--panel-hundido)"
           stroke="var(--torns-panel)"
           strokeWidth="2.5"
         />
       </g>
       {/* Lente */}
-      <circle cx="0" cy="96" r="11" fill="var(--surface-0)" stroke="var(--activity)" strokeWidth="3" />
+      <circle cx="0" cy="96" r="11" fill="var(--black)" stroke="var(--activity)" strokeWidth="3" />
       <circle cx="0" cy="96" r="3.5" fill="var(--activity)" />
     </g>
   );
@@ -66,7 +66,7 @@ export default function EscenaControl() {
             y1={i * 70}
             x2={ANCHO_ESCENA}
             y2={i * 70}
-            stroke="var(--border-quiet)"
+            stroke="var(--borde)"
             strokeWidth="1"
           />
         ))}
@@ -77,7 +77,7 @@ export default function EscenaControl() {
             y1="0"
             x2={i * 140}
             y2={ALTO_ESCENA}
-            stroke="var(--border-quiet)"
+            stroke="var(--borde)"
             strokeWidth="1"
           />
         ))}
@@ -87,8 +87,8 @@ export default function EscenaControl() {
       <g className="escena-tren">
         <path
           d="M 0 148 L 1000 148 L 1000 300 L 0 300 Z"
-          fill="var(--surface-2)"
-          stroke="var(--border-mid)"
+          fill="var(--panel)"
+          stroke="var(--borde-fuerte)"
           strokeWidth="2"
         />
         {VENTANAS.map((vx) => (
@@ -99,8 +99,8 @@ export default function EscenaControl() {
             width="72"
             height="40"
             rx="3"
-            fill="var(--surface-0)"
-            stroke="var(--border-quiet)"
+            fill="var(--black)"
+            stroke="var(--borde)"
             strokeWidth="1.5"
           />
         ))}
@@ -118,7 +118,7 @@ export default function EscenaControl() {
       <g className="escena-anden">
         <rect x="0" y="302" width={ANCHO_ESCENA} height="5" fill="var(--torns-mid)" />
         <rect x="0" y="307" width={ANCHO_ESCENA} height="2" fill="var(--torns-deep)" />
-        <rect x="0" y="330" width={ANCHO_ESCENA} height="1.5" fill="var(--border-mid)" />
+        <rect x="0" y="330" width={ANCHO_ESCENA} height="1.5" fill="var(--borde-fuerte)" />
       </g>
 
       {/* Postes de cámara, encima de todo */}

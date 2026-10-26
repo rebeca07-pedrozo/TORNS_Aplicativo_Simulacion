@@ -167,13 +167,14 @@ function Grafico({
 
 export default function Graficos({ salida }: { salida: ResultadoSimulacion }) {
   return (
-    <section className="bloque" aria-labelledby="titulo-graficos">
-      <header className="bloque-encabezado">
+    <section className="banda campo-blanco" aria-labelledby="titulo-graficos">
+      <div className="banda-interior">
+      <header className="banda-encabezado">
         <div>
-          <h2 id="titulo-graficos" className="bloque-titulo">
+          <h2 id="titulo-graficos" className="banda-titulo">
             Comparación de indicadores
           </h2>
-          <p className="bloque-bajada">
+          <p className="banda-bajada">
             El mismo escenario visto indicador por indicador. La barra en cian es la alternativa
             recomendada; las punteadas son alternativas que quedaron fuera.
           </p>
@@ -189,6 +190,7 @@ export default function Graficos({ salida }: { salida: ResultadoSimulacion }) {
             recomendada={salida.recomendada}
           />
         ))}
+      </div>
       </div>
     </section>
   );

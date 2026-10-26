@@ -105,15 +105,15 @@ export default function Escenario({ entrada, errores, carga, alCambiar, alRestab
   const errorDe = (campo: 'K' | 'E' | 'F') => errores.find((e) => e.campo === campo);
 
   return (
-    <section className="bloque" aria-labelledby="titulo-escenario">
-      <header className="bloque-encabezado">
+    <section className="escenario" aria-labelledby="titulo-escenario">
+      <header className="banda-encabezado">
         <div>
-          <h2 id="titulo-escenario" className="bloque-titulo">
-            Escenario
+          <h2 id="titulo-escenario" className="banda-titulo">
+            El escenario
           </h2>
-          <p className="bloque-bajada">
+          <p className="banda-bajada">
             Las tres cosas que cambian de una estación a otra. El mismo TORNS se despliega de tres
-            formas distintas y se compara con estos mismos valores.
+            formas distintas y se compara siempre con estos mismos valores.
           </p>
         </div>
         <button type="button" className="boton-secundario" onClick={alRestablecer}>
@@ -183,7 +183,7 @@ export default function Escenario({ entrada, errores, carga, alCambiar, alRestab
         />
       </div>
 
-      <p className="carga-total">
+      <p className="portada-carga">
         {carga === null ? (
           <>
             <span className="carga-rotulo">Carga a analizar</span>

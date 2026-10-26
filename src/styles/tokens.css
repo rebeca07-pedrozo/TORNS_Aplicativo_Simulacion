@@ -1,69 +1,64 @@
 /* ===========================================================================
    TORNS · Simulador de arquitecturas — fichas de diseño
-   Firma LIRN. Modo oscuro sobre negro, tipografía Manrope.
+   Firma LIRN.
 
-   La paleta base es fija. Las superficies y los bordes NO son colores nuevos:
-   son mezclas de negro con --torns-deep y --torns-mid, calculadas una sola vez
-   y anotadas con su proporción, para que todo lo que se ve descienda de la paleta.
+   La paleta es la misma del sitio de LIRN, y se usa como allí: el azul
+   petróleo no es un acento ni un tinte de superficie, es el CAMPO de secciones
+   enteras —barra, portada, recomendación, pie—, que alternan con campos
+   blancos. El cian queda para los datos y el foco.
+
+   Cada sección declara su campo con una clase (.campo-azul, .campo-blanco,
+   .campo-aire) y eso redefine --fondo, --tinta, --acento y --borde. Los
+   componentes de dentro solo usan esas variables, así que el mismo panel se
+   adapta al campo donde cae sin saber en cuál está.
    =========================================================================== */
 
 :root {
-  color-scheme: dark;
+  color-scheme: light dark;
 
   /* --- Paleta base ------------------------------------------------------ */
   --torns-deep: #0b4f78;  /* azul petróleo dominante */
   --torns-mid: #1480b8;   /* azul medio */
   --torns-panel: #3aa8dc; /* azul claro de panel */
   --torns-air: #f3f9fd;   /* blanco azulado */
-  --black: #000000;       /* fondo */
-  --white: #ffffff;       /* texto */
+  --black: #000000;
+  --white: #ffffff;
   --graphite: #6b7280;    /* gris de apoyo */
   --activity: #00a8ff;    /* cian de acento: foco y detección */
-  --activity-ink: #006da8;/* acento sobre blanco */
+  --activity-ink: #006da8;/* el mismo acento, cuando va sobre blanco */
 
-  /* --- Superficies: negro con un paso de --torns-deep -------------------- */
-  --surface-0: var(--black);  /* la página */
-  --surface-1: #01080c;       /* 10 % de --torns-deep */
-  --surface-2: #020d13;       /* 16 % */
-  --surface-3: #03131d;       /* 24 % */
-  --surface-4: #041926;       /* 32 % */
-
-  /* --- Bordes: pasos más altos de la misma línea ------------------------ */
-  --border-quiet: #06283c;    /* 50 % de --torns-deep */
-  --border-mid: #083754;      /* 70 % */
-  --border-strong: var(--torns-deep);
-
-  /* --- Texto ------------------------------------------------------------ */
-  --text-1: var(--white);     /* 21:1 sobre negro */
-  --text-2: #afb6be;          /* --torns-air + --graphite al 50 %; 10,2:1 */
-  --text-3: #8d94a0;          /* --graphite aclarado con --torns-air; 6,8:1 */
-
-  /* --- Acento ----------------------------------------------------------- */
-  --accent: var(--activity);          /* 8:1 sobre negro */
-  --accent-dim: #0a6c9e;              /* 70 % de --activity sobre negro */
-  --accent-wash: #001826;             /* 12 % de --activity sobre negro */
-  --accent-ink: var(--activity-ink);  /* el acento cuando va sobre blanco */
+  /* --- El gesto de la marca ---------------------------------------------
+     La esquina cortada en diagonal: el mismo corte que llevan la L y la N
+     del logo, y el que usa el sitio de LIRN en sus bloques.               */
+  --cut: 12%;
+  --esquina-cortada: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    0 100%
+  );
 
   /* --- Tipografía -------------------------------------------------------
-     Manrope en todas partes. Un solo tipo, como manda la casa.             */
+     Manrope en todas partes, servida desde el propio sitio.              */
   --font: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  --size-display: clamp(2.5rem, 9vw, 5.5rem);
-  --size-title: clamp(1.5rem, 3.4vw, 2.125rem);
-  --size-section: clamp(1.125rem, 2vw, 1.375rem);
-  --size-figure: clamp(1.75rem, 4.5vw, 2.5rem);
+  --size-display: clamp(2.35rem, 5.2vw, 4.75rem);
+  --size-title: clamp(1.75rem, 4vw, 3rem);
+  --size-section: clamp(1.25rem, 2.4vw, 1.75rem);
+  --size-figure: clamp(2rem, 5vw, 3rem);
   --size-body: 1rem;
   --size-small: 0.875rem;
   --size-micro: 0.75rem;
 
   /* El tracking depende del tamaño: apretado en lo grande, suelto en lo diminuto. */
   --track-display: -0.04em;
-  --track-title: -0.025em;
+  --track-title: -0.03em;
   --track-body: 0em;
-  --track-micro: 0.08em;
+  --track-micro: 0.12em;
 
   --leading-display: 0.95;
-  --leading-title: 1.1;
+  --leading-title: 1.08;
   --leading-body: 1.55;
 
   /* --- Espaciado -------------------------------------------------------- */
@@ -77,11 +72,10 @@
   --space-8: 4rem;
   --space-9: 6rem;
 
-  /* --- Geometría: decidida una vez, angular y técnica ------------------- */
   --radius-s: 2px;
   --radius-m: 4px;
 
-  /* --- Motion: curvas físicas, no rebotes decorativos ------------------- */
+  /* --- Movimiento: curvas físicas, no rebotes decorativos --------------- */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-press: 110ms;
@@ -89,23 +83,89 @@
   --dur-calm: 420ms;
 
   /* --- Medidas del marco ------------------------------------------------ */
-  --gutter: clamp(1rem, 4vw, 3rem);
-  --measure: 68ch;
-  --topbar-h: 56px;
+  --gutter: clamp(1.25rem, 4vw, 4rem);
+  --measure: 66ch;
+  --topbar-h: 60px;
+  --ancho-max: 1440px;
 }
 
-@media (prefers-reduced-transparency: reduce) {
-  :root {
-    --surface-1: #020a10;
-    --surface-2: #03111a;
-  }
+/* ===========================================================================
+   Los tres campos. Cada uno fija su fondo, su tinta y su acento.
+   Los contrastes anotados son contra el propio fondo del campo.
+   =========================================================================== */
+
+.campo-azul {
+  --fondo: var(--torns-deep);
+  --tinta: var(--white);                                      /* 8,7:1 */
+  --tinta-2: color-mix(in srgb, var(--white) 80%, transparent);/* 6,2:1 */
+  --tinta-3: color-mix(in srgb, var(--white) 68%, transparent);/* 4,8:1 */
+  --acento: var(--activity);
+  --acento-tinta: var(--black);
+  --borde: color-mix(in srgb, var(--white) 24%, transparent);
+  --borde-fuerte: color-mix(in srgb, var(--white) 42%, transparent);
+  --panel: color-mix(in srgb, var(--black) 14%, var(--torns-deep));
+  --panel-hundido: color-mix(in srgb, var(--black) 26%, var(--torns-deep));
+}
+
+.campo-blanco {
+  --fondo: var(--white);
+  --tinta: var(--black);                                      /* 21:1 */
+  --tinta-2: color-mix(in srgb, var(--black) 76%, transparent);/* 10,4:1 */
+  --tinta-3: color-mix(in srgb, var(--black) 58%, transparent);/* 5,3:1 */
+  --acento: var(--activity-ink);                              /* 5,6:1 */
+  --acento-tinta: var(--black);                               /* sobre el cian: 8:1 */
+  --borde: color-mix(in srgb, var(--torns-deep) 18%, transparent);
+  --borde-fuerte: color-mix(in srgb, var(--torns-deep) 38%, transparent);
+  --panel: var(--torns-air);
+  --panel-hundido: color-mix(in srgb, var(--torns-deep) 8%, var(--white));
+}
+
+.campo-aire {
+  --fondo: var(--torns-air);
+  --tinta: var(--black);
+  --tinta-2: color-mix(in srgb, var(--black) 76%, transparent);
+  --tinta-3: color-mix(in srgb, var(--black) 58%, transparent);
+  --acento: var(--activity-ink);
+  --acento-tinta: var(--black);
+  --borde: color-mix(in srgb, var(--torns-deep) 18%, transparent);
+  --borde-fuerte: color-mix(in srgb, var(--torns-deep) 38%, transparent);
+  --panel: var(--white);
+  --panel-hundido: color-mix(in srgb, var(--torns-deep) 7%, var(--white));
+}
+
+/* El intro ocurre en la cabina del operador, a oscuras: ahí el campo es negro. */
+.campo-cabina {
+  --fondo: var(--black);
+  --tinta: var(--white);
+  --tinta-2: color-mix(in srgb, var(--white) 74%, transparent);
+  --tinta-3: color-mix(in srgb, var(--white) 56%, transparent);
+  --acento: var(--activity);
+  --acento-tinta: var(--black);
+  --borde: color-mix(in srgb, var(--torns-mid) 36%, transparent);
+  --borde-fuerte: var(--torns-deep);
+  --panel: color-mix(in srgb, var(--torns-deep) 30%, var(--black));
+  --panel-hundido: color-mix(in srgb, var(--torns-deep) 46%, var(--black));
+}
+
+.campo-azul,
+.campo-blanco,
+.campo-aire,
+.campo-cabina {
+  background: var(--fondo);
+  color: var(--tinta);
 }
 
 @media (prefers-contrast: more) {
-  :root {
-    --text-2: var(--torns-air);
-    --text-3: var(--torns-air);
-    --border-quiet: var(--torns-mid);
-    --border-mid: var(--torns-panel);
+  .campo-azul {
+    --tinta-2: var(--white);
+    --tinta-3: var(--white);
+    --borde: color-mix(in srgb, var(--white) 55%, transparent);
+  }
+
+  .campo-blanco,
+  .campo-aire {
+    --tinta-2: var(--black);
+    --tinta-3: var(--black);
+    --borde: var(--torns-deep);
   }
 }

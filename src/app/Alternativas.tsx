@@ -191,13 +191,14 @@ function Tarjeta({
 
 export default function Alternativas({ salida }: { salida: ResultadoSimulacion }) {
   return (
-    <section className="bloque" aria-labelledby="titulo-alternativas">
-      <header className="bloque-encabezado">
+    <section className="banda campo-aire" aria-labelledby="titulo-alternativas">
+      <div className="banda-interior">
+      <header className="banda-encabezado">
         <div>
-          <h2 id="titulo-alternativas" className="bloque-titulo">
+          <h2 id="titulo-alternativas" className="banda-titulo">
             Resultados por alternativa
           </h2>
-          <p className="bloque-bajada">
+          <p className="banda-bajada">
             Las tres despliegan el mismo TORNS con las mismas {salida.escenario.K} cámaras,{' '}
             {salida.escenario.F} cuadros por segundo y{' '}
             {salida.escenario.E ? 'con' : 'sin'} exigencia de cifrado. Cambia dónde corre cada pieza.
@@ -220,6 +221,7 @@ export default function Alternativas({ salida }: { salida: ResultadoSimulacion }
         recibe puntaje. <strong>RQ-06</strong> solo informa si el software va empaquetado en
         contenedores; ni descalifica ni suma puntos.
       </p>
+      </div>
     </section>
   );
 }
