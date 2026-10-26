@@ -225,47 +225,7 @@ npm run typecheck  # revisión de tipos
 
 ---
 
-## 5. Despliegue
-
-El sitio se publica en GitHub Pages mediante GitHub Actions. El flujo está
-definido en `.github/workflows/deploy.yml` y se ejecuta en cada envío a la rama
-principal.
-
-### 5.1 Activación inicial
-
-Se realiza una sola vez:
-
-1. En el repositorio, abrir **Settings**.
-2. En el menú lateral, **Pages**.
-3. En **Build and deployment**, desplegar **Source** y elegir **GitHub Actions**.
-
-No hay que seleccionar rama ni carpeta: el flujo publica el resultado de la
-compilación.
-
-### 5.2 Despliegue manual
-
-1. Abrir la pestaña **Actions** del repositorio.
-2. En la lista lateral, elegir el flujo **Publicar en GitHub Pages**.
-3. Pulsar **Run workflow**, confirmar la rama y pulsar el botón verde.
-4. El flujo ejecuta revisión de tipos, pruebas, compilación y publicación. Al
-   terminar, el trabajo **Publicar** muestra la dirección del sitio.
-
-La primera publicación tarda unos minutos en quedar accesible. Las siguientes
-son inmediatas.
-
-### 5.3 Despliegue automático
-
-Cualquier envío a la rama principal lanza el mismo flujo. No requiere
-intervención.
-
-### 5.4 Cambio de dirección
-
-La ruta base está fijada en `vite.config.ts` y corresponde al nombre del
-repositorio. Para publicar en un dominio propio, compilar con `BASE_PATH=/`.
-
----
-
-## 6. Supuestos y limitaciones
+## 5. Supuestos y limitaciones
 
 - Los tiempos de 80 ms por cuadro en CPU y 110 ms en equipo de borde son
   parámetros del taller, no mediciones.
@@ -279,7 +239,7 @@ repositorio. Para publicar en un dominio propio, compilar con `BASE_PATH=/`.
 
 ---
 
-## 7. Créditos
+## 6. Créditos
 
 Manrope, de Mikhail Sharanda, bajo SIL Open Font License 1.1. El texto de la
 licencia está en `public/fuentes/OFL.txt`.
