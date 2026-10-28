@@ -1,6 +1,34 @@
+
+# Dependencias
 node_modules/
+
+# Archivos generados por la compilación
 dist/
+dist-ssr/
+
+# Variables de entorno y secretos locales
+.env
+.env.*
+!.env.example
+
+# Archivos locales
 *.local
-.DS_Store
+
+# Logs
 *.log
-tsconfig.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Cachés
+.vite/
+coverage/
+*.tsbuildinfo
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Configuración local de editores
+.vscode/
+.idea/
