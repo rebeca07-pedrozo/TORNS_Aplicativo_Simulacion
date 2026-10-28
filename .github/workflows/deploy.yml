@@ -1,15 +1,15 @@
 # Compila el simulador y lo publica en GitHub Pages.
 #
-# Para que funcione hay que activarlo una vez en el repositorio:
-# Settings → Pages → Build and deployment → Source: GitHub Actions.
+# Solo se lanza a mano, desde Actions > Publicar en GitHub Pages > Run workflow.
+# Un push a la rama NO publica nada: el sitio se queda en la última versión que
+# se publicó a propósito, y los cambios del repositorio no salen hasta que
+# alguien lance este flujo.
+#
+# La dirección del sitio no cambia nunca: GitHub Pages la deriva del nombre del
+# repositorio, no del flujo ni de la rama.
 name: Publicar en GitHub Pages
 
 on:
-  push:
-    branches:
-      - claude/cool-hamilton-2lz9s7
-      - main
-  # Permite lanzarlo a mano desde la pestaña Actions.
   workflow_dispatch:
 
 # Permisos mínimos para que la acción pueda publicar.
@@ -18,10 +18,11 @@ permissions:
   pages: write
   id-token: write
 
-# Si llegan varios cambios seguidos, se publica el último y se cancelan los demás.
+# Solo una publicación a la vez. No se corta la que esté en curso: interrumpir
+# un despliegue a medias puede dejar Pages en un estado raro.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   construir:

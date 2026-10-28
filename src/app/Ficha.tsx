@@ -8,6 +8,7 @@ import {
   ALTERNATIVAS,
   AS_IS,
   FIRMA,
+  PENDIENTE_DE_VALIDAR,
   REQUISITOS,
   RESTRICCIONES,
   SUPUESTOS,
@@ -115,6 +116,29 @@ export default function Ficha() {
           </ul>
         </div>
       </div>
+
+      <h3 className="ficha-subtitulo ficha-subtitulo-ancho">
+        Qué haría falta para validar esto en una aplicación real
+      </h3>
+      <p className="banda-bajada">
+        El simulador entrega estimaciones calculadas con parámetros del taller. Para sostener estas
+        conclusiones sobre un sistema en producción habría que medir lo siguiente y volver a correr
+        el modelo con los valores observados.
+      </p>
+      <ol className="validacion">
+        {PENDIENTE_DE_VALIDAR.map((v) => (
+          <li key={v.supuesto}>
+            <p className="validacion-supuesto">Hoy se supone que</p>
+            <p className="validacion-titulo">{v.supuesto}</p>
+            <p className="validacion-medir">
+              <strong>Habría que medir:</strong> {v.medir}
+            </p>
+            <p className="validacion-efecto">
+              <strong>Si no coincide:</strong> {v.efecto}
+            </p>
+          </li>
+        ))}
+      </ol>
 
       <h3 className="ficha-subtitulo ficha-subtitulo-ancho">Las tres alternativas comparadas</h3>
       <p className="banda-bajada">

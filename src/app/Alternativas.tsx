@@ -9,7 +9,9 @@
  * ("cumple" / "no cumple") y su marca de forma, además del tono.
  */
 
+import { useId, useState } from 'react';
 import { L_MAX } from '../engine/constants';
+import { CONSTANTES_VISIBLES, cuentasDe, type ClaveIndicador } from '../engine/cuentas';
 import { frasesMotivo } from '../engine/modelo';
 import {
   formatearA,
@@ -18,7 +20,7 @@ import {
   formatearPuntaje,
   formatearRho,
 } from '../engine/redondeo';
-import type { ResultadoAlternativa, ResultadoSimulacion } from '../engine/types';
+import type { Escenario, ResultadoAlternativa, ResultadoSimulacion } from '../engine/types';
 import { ALTERNATIVAS } from '../contenido/ficha';
 import { explicar } from '../contenido/glosario';
 
@@ -45,35 +47,35 @@ function Marca({
 
 const INDICADORES = [
   {
-    clave: 'C' as const,
+    clave: 'C' as ClaveIndicador,
     simbolo: 'C',
     titulo: 'Capacidad',
     unidad: 'cuadros/s',
     valor: (a: ResultadoAlternativa) => formatearC(a.C),
   },
   {
-    clave: 'rho' as const,
+    clave: 'rho' as ClaveIndicador,
     simbolo: 'ρ',
     titulo: 'Ocupación',
     unidad: '',
     valor: (a: ResultadoAlternativa) => formatearRho(a.rho),
   },
   {
-    clave: 'L' as const,
+    clave: 'L' as ClaveIndicador,
     simbolo: 'L',
     titulo: 'Latencia',
     unidad: 'ms',
     valor: (a: ResultadoAlternativa) => formatearL(a.L),
   },
   {
-    clave: 'S' as const,
+    clave: 'S' as ClaveIndicador,
     simbolo: 'S',
     titulo: 'Escalabilidad',
     unidad: 'cámaras',
     valor: (a: ResultadoAlternativa) => String(a.S),
   },
   {
-    clave: 'A' as const,
+    clave: 'A' as ClaveIndicador,
     simbolo: 'A',
     titulo: 'Disponibilidad',
     unidad: '%',
@@ -104,10 +106,15 @@ function Leyenda() {
 function Tarjeta({
   resultado,
   recomendada,
+  escenario,
+  conCuentas,
 }: {
   resultado: ResultadoAlternativa;
   recomendada: boolean;
+  escenario: Escenario;
+  conCuentas: boolean;
 }) {
+  const cuentas = cuentasDe(resultado, escenario);
   const ficha = ALTERNATIVAS.find((a) => a.id === resultado.id)!;
   const clases = [
     'alternativa',
@@ -128,20 +135,36 @@ function Tarjeta({
       </header>
 
       <dl className="alternativa-indicadores">
-        {INDICADORES.map((ind) => (
-          <div className="indicador" key={ind.clave}>
-            <dt>
-              <span className="indicador-simbolo cifra" aria-hidden="true">
-                {ind.simbolo}
-              </span>
-              <span className="indicador-titulo">{ind.titulo}</span>
-            </dt>
-            <dd className="indicador-valor cifra">
-              {ind.valor(resultado)}
-              {ind.unidad && <span className="unidad"> {ind.unidad}</span>}
-            </dd>
-          </div>
-        ))}
+        {INDICADORES.map((ind) => {
+          const cuenta = cuentas[ind.clave];
+          return (
+            <div className="indicador" key={ind.clave}>
+              <div className="indicador-linea">
+                <dt>
+                  <span className="indicador-simbolo cifra" aria-hidden="true">
+                    {ind.simbolo}
+                  </span>
+                  <span className="indicador-titulo">{ind.titulo}</span>
+                </dt>
+                <dd className="indicador-valor cifra">
+                  {ind.valor(resultado)}
+                  {ind.unidad && <span className="unidad"> {ind.unidad}</span>}
+                </dd>
+              </div>
+
+              {conCuentas && (
+                <dd className="cuenta">
+                  <p className="cuenta-formula cifra">{cuenta.formula}</p>
+                  <p className="cuenta-sustitucion cifra">
+                    {cuenta.sustitucion} = <b>{cuenta.resultado}</b>
+                    {ind.unidad ? ` ${ind.unidad}` : ''}
+                  </p>
+                  {cuenta.nota && <p className="cuenta-nota">{cuenta.nota}</p>}
+                </dd>
+              )}
+            </div>
+          );
+        })}
       </dl>
 
       {/* La fila existe siempre, aunque esté vacía: así las tarjetas no se desalinean. */}
@@ -190,37 +213,81 @@ function Tarjeta({
 }
 
 export default function Alternativas({ salida }: { salida: ResultadoSimulacion }) {
+  // Apagado por defecto: la cuenta es para quien quiera comprobarla, no ruido
+  // permanente. En la sustentación se enciende una vez y queda a la vista en
+  // las tres alternativas a la vez.
+  const [conCuentas, setConCuentas] = useState(false);
+  const idRejilla = useId();
+
   return (
     <section className="banda campo-aire" aria-labelledby="titulo-alternativas">
       <div className="banda-interior">
-      <header className="banda-encabezado">
-        <div>
-          <h2 id="titulo-alternativas" className="banda-titulo">
-            Resultados por alternativa
-          </h2>
-          <p className="banda-bajada">
-            Las tres despliegan el mismo TORNS con las mismas {salida.escenario.K} cámaras,{' '}
-            {salida.escenario.F} cuadros por segundo y{' '}
-            {salida.escenario.E ? 'con' : 'sin'} exigencia de cifrado. Cambia dónde corre cada pieza.
-          </p>
+        <header className="banda-encabezado">
+          <div>
+            <h2 id="titulo-alternativas" className="banda-titulo">
+              Resultados por alternativa
+            </h2>
+            <p className="banda-bajada">
+              Las tres despliegan el mismo TORNS con las mismas {salida.escenario.K} cámaras,{' '}
+              {salida.escenario.F} cuadros por segundo y{' '}
+              {salida.escenario.E ? 'con' : 'sin'} exigencia de cifrado. Cambia dónde corre cada
+              pieza.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className={conCuentas ? 'boton-secundario boton-activo' : 'boton-secundario'}
+            aria-pressed={conCuentas}
+            aria-controls={idRejilla}
+            onClick={() => setConCuentas((v) => !v)}
+          >
+            {conCuentas ? 'Ocultar las cuentas' : 'Ver cómo se calcula cada indicador'}
+          </button>
+        </header>
+
+        <Leyenda />
+
+        {conCuentas && (
+          <div className="constantes">
+            <h3 className="constantes-titulo">Constantes que usa el modelo</h3>
+            <p className="constantes-bajada">
+              Son fijas y no dependen del escenario. Son parámetros del taller, no mediciones de un
+              sistema real.
+            </p>
+            <dl className="constantes-lista">
+              {CONSTANTES_VISIBLES.map((c) => (
+                <div key={c.simbolo}>
+                  <dt>
+                    <span className="constantes-simbolo cifra">{c.simbolo}</span>
+                    <span className="constantes-valor cifra">{c.valor}</span>
+                  </dt>
+                  <dd>{c.que}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )}
+
+        <div className="rejilla-alternativas" id={idRejilla}>
+          {salida.alternativas.map((a) => (
+            <Tarjeta
+              key={a.id}
+              resultado={a}
+              recomendada={a.id === salida.recomendada}
+              escenario={salida.escenario}
+              conCuentas={conCuentas}
+            />
+          ))}
         </div>
-      </header>
 
-      <Leyenda />
-
-      <div className="rejilla-alternativas">
-        {salida.alternativas.map((a) => (
-          <Tarjeta key={a.id} resultado={a} recomendada={a.id === salida.recomendada} />
-        ))}
-      </div>
-
-      <p className="nota-requisitos">
-        <strong>RQ-01</strong> exige que el conteo llegue al operador en {L_MAX} ms o menos.{' '}
-        <strong>RQ-02</strong> exige que, cuando el escenario lo pide, el video de personas no viaje
-        legible por la red. Los dos son obligatorios: si uno falla, la alternativa queda fuera y no
-        recibe puntaje. <strong>RQ-06</strong> solo informa si el software va empaquetado en
-        contenedores; ni descalifica ni suma puntos.
-      </p>
+        <p className="nota-requisitos">
+          <strong>RQ-01</strong> exige que el conteo llegue al operador en {L_MAX} ms o menos.{' '}
+          <strong>RQ-02</strong> exige que, cuando el escenario lo pide, el video de personas no
+          viaje legible por la red. Los dos son obligatorios: si uno falla, la alternativa queda
+          fuera y no recibe puntaje. <strong>RQ-06</strong> solo informa si el software va
+          empaquetado en contenedores; ni descalifica ni suma puntos.
+        </p>
       </div>
     </section>
   );

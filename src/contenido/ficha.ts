@@ -191,6 +191,69 @@ export const PISTAS = {
   F: 'Analizar más veces por segundo da un conteo más fresco, pero multiplica el trabajo de cada cámara.',
 } as const;
 
+export interface PendienteDeValidar {
+  /** El supuesto que el modelo da por bueno. */
+  supuesto: string;
+  /** Lo que habría que medir para confirmarlo o corregirlo. */
+  medir: string;
+  /** Qué parte del resultado cambia si la medición no coincide. */
+  efecto: string;
+}
+
+/**
+ * Qué haría falta para validar estas conclusiones en una aplicación real.
+ *
+ * El simulador entrega estimaciones calculadas con parámetros del taller. Esta
+ * lista dice, para cada supuesto, qué medición lo confirmaría y qué parte del
+ * resultado se movería si la medición no coincidiera.
+ */
+export const PENDIENTE_DE_VALIDAR: PendienteDeValidar[] = [
+  {
+    supuesto: 'Un PC analiza un cuadro en 80 ms y un equipo de borde en 110 ms.',
+    medir:
+      'El tiempo real de inferencia por cuadro, corriendo YOLO11s sobre el hardware que se vaya a usar y con video de la estación, no con video de prueba. Conviene tomar la mediana y el percentil 95, no solo el promedio.',
+    efecto:
+      'Mueve la capacidad y la latencia de las tres alternativas, y con ellas la ocupación, la escalabilidad y el puntaje. Es el parámetro que más pesa en todo el modelo.',
+  },
+  {
+    supuesto: 'La red tarda 20, 50 y 12 ms según la alternativa, y siempre lo mismo.',
+    medir:
+      'La latencia real entre la estación y el centro de control, medida a distintas horas, y cuánto varía en hora pico. También el ancho de banda disponible, que es lo que decide si el video anotado de la alternativa 2 llega completo.',
+    efecto:
+      'Mueve la latencia de las alternativas 2 y 3. Si la red de la estación es peor de lo supuesto, la alternativa 3 gana todavía más margen, porque solo manda un número.',
+  },
+  {
+    supuesto:
+      'Si la arquitectura satura, la latencia salta de golpe a 10000 ms. No hay colas ni azar.',
+    medir:
+      'Cómo se degrada el sistema real cuando la ocupación se acerca a 1: cuánto crece la cola de cuadros pendientes y en qué momento el conteo deja de ser útil para decidir un despacho.',
+    efecto:
+      'Un sistema real degrada de forma progresiva, no en un escalón. Cerca de la saturación este modelo es pesimista o directamente no aplica.',
+  },
+  {
+    supuesto: 'Las disponibilidades base son 93, 97 y 94 por ciento.',
+    medir:
+      'El histórico de caídas de cada pieza durante varios meses: el PC del centro, los contenedores y su orquestador, y los equipos instalados en estación. Con eso se calcula una disponibilidad observada en vez de supuesta.',
+    efecto:
+      'Mueve la nota de disponibilidad, que pesa 0,25 en el puntaje. Es el segundo peso más alto después de la latencia.',
+  },
+  {
+    supuesto: 'Cifrar cuesta 25 ms en un video y 4 ms en un mensaje corto.',
+    medir:
+      'El costo real de TLS sobre el stream MJPEG y sobre el mensaje de conteo, con el cifrado y los certificados que se vayan a usar, incluyendo el tiempo de establecer la conexión.',
+    efecto:
+      'Mueve la latencia de las alternativas 2 y 3 solo cuando el escenario exige cifrado. Es el parámetro de menor peso de los cinco.',
+  },
+  {
+    supuesto:
+      'El conteo que entrega el detector es correcto. El modelo no evalúa si acierta.',
+    medir:
+      'El acierto del detector sobre video real de andén: cuántas personas deja de ver con el andén lleno, cuántas cuenta de más, y cómo le afecta la luz y la distancia de la cámara.',
+    efecto:
+      'No cambia ningún indicador de este simulador, pero decide si el conteo sirve para despachar trenes. Una arquitectura rápida que cuenta mal no resuelve el problema.',
+  },
+];
+
 /** Supuestos del modelo (sección 8). */
 export const SUPUESTOS = [
   'Los 80 ms por cuadro en un PC y los 110 ms en un equipo de borde son parámetros del taller, no mediciones reales.',
