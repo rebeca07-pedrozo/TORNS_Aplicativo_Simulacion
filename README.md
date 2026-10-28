@@ -87,11 +87,31 @@ puntaje = 0,35·N_L + 0,25·N_A + 0,20·N_S + 0,15·N_C - complejidad
 ```
 
 La recomendación es la elegible de mayor puntaje. En caso de empate decide la
-menor latencia; si persiste, el menor número de alternativa. La interfaz muestra
-la descomposición del puntaje de la alternativa ganadora para que el cálculo
-pueda seguirse término a término.
+menor latencia; si persiste, el menor número de alternativa.
 
-### 2.5 Precisión y redondeo
+### 2.5 Trazabilidad del cálculo
+
+La aplicación permite seguir la cadena completa desde las entradas hasta la
+recomendación, sin salir de la pantalla.
+
+La recomendación muestra la descomposición de su puntaje: cada indicador con su
+nota, su peso y lo que aporta, el descuento por complejidad y el total.
+
+En los resultados por alternativa, el control "Ver cómo se calcula cada
+indicador" despliega bajo cada valor la regla del modelo, esa misma regla con
+los valores del escenario sustituidos y el resultado. Por ejemplo, para la
+alternativa 1 en el escenario de referencia:
+
+```
+L = T_CPU × K + NET_1
+L = 80 × 2 + 20 = 180 ms
+```
+
+La sustitución se arma en `src/engine/cuentas.ts`, con las mismas constantes que
+hacen el cálculo, de modo que no puede desviarse de él. Junto a las cuentas se
+listan las constantes que el modelo da por fijas.
+
+### 2.6 Precisión y redondeo
 
 El cálculo se hace en coma flotante y **solo se redondea al mostrar**: latencia
 al entero más cercano, capacidad a dos decimales, ocupación a cuatro,
@@ -225,7 +245,19 @@ npm run typecheck  # revisión de tipos
 
 ---
 
-## 5. Supuestos y limitaciones
+## 5. Validación pendiente
+
+La aplicación incluye una sección que responde qué haría falta para sostener
+estas conclusiones sobre un sistema en producción. Para cada supuesto del modelo
+indica la medición que lo confirmaría y qué parte del resultado se movería si la
+medición no coincidiera. Cubre el tiempo real de inferencia por cuadro, la
+latencia y el ancho de banda de la red de la estación, la degradación con cola
+cerca de la saturación, el histórico de caídas frente a las disponibilidades
+base, el costo real de TLS y el acierto del detector.
+
+---
+
+## 6. Supuestos y limitaciones
 
 - Los tiempos de 80 ms por cuadro en CPU y 110 ms en equipo de borde son
   parámetros del taller, no mediciones.
@@ -239,7 +271,7 @@ npm run typecheck  # revisión de tipos
 
 ---
 
-## 6. Créditos
+## 7. Créditos
 
 Manrope, de Mikhail Sharanda, bajo SIL Open Font License 1.1. El texto de la
 licencia está en `public/fuentes/OFL.txt`.

@@ -805,12 +805,15 @@
 }
 
 .indicador {
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--borde);
+}
+
+.indicador-linea {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
-  padding: var(--space-3) 0;
-  border-top: 1px solid var(--borde);
 }
 
 .indicador dt {
@@ -987,6 +990,167 @@
 .nota-requisitos strong {
   font-weight: 800;
   color: var(--tinta-2);
+}
+
+/* --- La cuenta de cada indicador --------------------------------------------
+   La regla, la regla con los valores puestos y el resultado. Es lo que permite
+   comprobar que el número de arriba sale del escenario y no de ningún sitio. */
+
+.cuenta {
+  margin: var(--space-3) 0 var(--space-1);
+  padding: var(--space-3) var(--space-4);
+  background: var(--panel-hundido);
+  border-left: 2px solid var(--acento);
+}
+
+.cuenta-formula {
+  font-size: var(--size-micro);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--tinta-3);
+}
+
+.cuenta-sustitucion {
+  margin-top: var(--space-1);
+  font-size: var(--size-small);
+  line-height: 1.5;
+  color: var(--tinta);
+  overflow-wrap: anywhere;
+}
+
+.cuenta-sustitucion b {
+  font-weight: 800;
+  color: var(--acento);
+}
+
+.cuenta-nota {
+  margin-top: var(--space-2);
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--tinta-3);
+}
+
+.boton-activo {
+  color: var(--acento-tinta);
+  background: var(--activity);
+  border-color: var(--activity);
+}
+
+/* --- Las constantes del modelo ---------------------------------------------- */
+
+.constantes {
+  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  background: var(--panel);
+  border: 1px solid var(--borde);
+}
+
+.constantes-titulo {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--acento);
+}
+
+.constantes-bajada {
+  margin-top: var(--space-2);
+  max-width: var(--measure);
+  font-size: var(--size-small);
+  color: var(--tinta-3);
+}
+
+.constantes-lista {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-3) var(--space-5);
+  margin: var(--space-4) 0 0;
+}
+
+.constantes-lista > div {
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+
+.constantes-lista dt {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.constantes-simbolo {
+  font-size: var(--size-small);
+  font-weight: 800;
+  color: var(--tinta);
+}
+
+.constantes-valor {
+  font-size: var(--size-small);
+  font-weight: 700;
+  color: var(--acento);
+}
+
+.constantes-lista dd {
+  margin: 0;
+  font-size: var(--size-micro);
+  line-height: 1.5;
+  color: var(--tinta-3);
+}
+
+/* --- Qué haría falta para validar -------------------------------------------- */
+
+.validacion {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.validacion > li {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--panel);
+  border: 1px solid var(--borde);
+}
+
+.validacion-supuesto {
+  font-size: var(--size-micro);
+  font-weight: 700;
+  letter-spacing: var(--track-micro);
+  text-transform: uppercase;
+  color: var(--tinta-3);
+}
+
+.validacion-titulo {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  color: var(--tinta);
+}
+
+.validacion-medir,
+.validacion-efecto {
+  max-width: var(--measure);
+  font-size: var(--size-small);
+}
+
+.validacion-medir {
+  color: var(--tinta-2);
+}
+
+.validacion-efecto {
+  color: var(--tinta-3);
+}
+
+.validacion-medir strong,
+.validacion-efecto strong {
+  font-weight: 800;
+  color: var(--tinta);
+}
+
+.validacion-titulo {
+  max-width: 54ch;
 }
 
 /* --- Gráficos -------------------------------------------------------------- */
